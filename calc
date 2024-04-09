@@ -1,0 +1,79 @@
+#include <iostream>
+#include <string>
+#include <limits>
+#include <cmath>
+
+using namespace std;
+
+double calculate(double num1, double num2, char op) {
+    switch (op) {
+        case '+':
+            return num1 + num2;
+        case '-':
+            return num1 - num2;
+        case '*':
+            return num1 * num2;
+        case '/':
+            if (num2 != 0) {
+                return num1 / num2;
+            } else {
+                throw runtime_error("Error: Division by zero is not allowed.");
+            }
+        case '%':
+            if (num2 != 0) {
+                return static_cast<int>(num1) % static_cast<int>(num2);
+            } else {
+                throw runtime_error("Error: Division by zero is not allowed.");
+            }
+        case '^':
+            return pow(num1, num2);
+        default:
+            throw invalid_argument("Error: Invalid operation.");
+    }
+}
+
+int main() {
+    char choice;
+    bool continueCalculation = true;
+
+    while (continueCalculation) {
+        double num1, num2;
+        char op;
+
+        cout << "Enter first number: ";
+        while (!(cin >> num1)) {
+            cout << "Invalid input. Please enter a valid number: ";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+
+        cout << "Enter second number: ";
+        while (!(cin >> num2)) {
+            cout << "Invalid input. Please enter a valid number: ";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+
+        cout << "Choose operation (+, -, *, /, % for modulus, ^ for exponentiation): ";
+        cin >> op;
+
+        try {
+            double result = calculate(num1, num2, op);
+            cout << "Result: " << num1 << " " << op << " " << num2 << " = " << result << endl;
+        } catch (const exception& e) {
+            cerr << e.what() << endl;
+        }
+
+        cout << "Do you want to perform another calculation? (y/n): ";
+        cin >> choice;
+        if (choice != 'y' && choice != 'Y') {
+            continueCalculation = false;
+        }
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+
+    cout << "Calculator program terminated. Goodbye!" << endl;
+
+    return 0;
+}
